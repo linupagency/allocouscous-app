@@ -1,4 +1,7 @@
 {
+  "installCommand": "npm ci",
+  "buildCommand": "npx expo export --platform web",
+  "outputDirectory": "dist",
   "rewrites": [
     {
       "source": "/admin",
