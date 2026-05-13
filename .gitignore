@@ -6,6 +6,7 @@ node_modules/
 # Expo
 .expo/
 dist/
+public/
 web-build/
 
 # Bundles d’audit / check Android (gros fichiers, pas nécessaires au déploiement Vercel)

@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "vercel-build": "npx expo export --platform web",
+    "vercel-build": "npx expo export --platform web && rm -rf public && cp -R dist public",
     "build:ios": "npx eas-cli@18.9.1 build --platform ios --profile production",
     "build:android:preview": "npx eas-cli@18.9.1 build --platform android --profile preview --clear-cache",
     "build:android": "npx eas-cli@18.9.1 build --platform android --profile production",
