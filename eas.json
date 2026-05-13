@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 18.9.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "track": "internal",
+        "serviceAccountKeyPath": "./google-play-service-account.json"
+      },
+      "ios": {
+        "appleTeamId": "8442H8ZY5F",
+        "companyName": "LINUP"
+      }
+    }
+  }
+}

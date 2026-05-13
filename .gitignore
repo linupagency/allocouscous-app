@@ -7,6 +7,9 @@ node_modules/
 .expo/
 dist/
 web-build/
+
+# Bundles d’audit / check Android (gros fichiers, pas nécessaires au déploiement Vercel)
+dist-android-*/
 expo-env.d.ts
 
 # Native
@@ -32,6 +35,18 @@ yarn-error.*
 
 # local env files
 .env*.local
+
+# Google Play API (EAS Submit) — ne pas committer
+google-play-service-account.json
+
+# Jeton validation développeurs Android (Play Console) — ne pas committer
+assets/adi-registration.properties
+
+# local snapshot (see README / backup instructions)
+_backup_before_security/
+
+# Supabase CLI cache (do not commit)
+supabase/.temp/
 
 # typescript
 *.tsbuildinfo

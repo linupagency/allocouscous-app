@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/"
+    },
+    {
+      "source": "/app",
+      "destination": "/"
+    },
+    {
+      "source": "/auth/reset-password",
+      "destination": "/"
+    }
+  ]
+}

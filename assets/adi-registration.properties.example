@@ -1,0 +1,9 @@
+# Copie ce fichier : cp assets/adi-registration.properties.example assets/adi-registration.properties
+# Puis remplace la ligne ci-dessous par le jeton affiché dans Play Console
+# (Validation développeurs Android → Signer et importer un APK).
+# Une seule ligne, sans guillemets ni espaces autour.
+#
+# Alternative : variable EAS GOOGLE_ADI_REGISTRATION_TOKEN (même valeur) sur expo.dev
+# pour les builds cloud sans fichier local.
+
+REPLACE_BY_TOKEN_FROM_PLAY_CONSOLE

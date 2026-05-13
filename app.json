@@ -1,30 +1,58 @@
 {
   "expo": {
-    "name": "alloapp",
-    "slug": "alloapp",
+    "name": "Allo Couscous",
+    "slug": "allocouscous",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "scheme": "allocouscous",
+    "description": "Commandez en ligne vos plats chez Allo Couscous : menus, retrait et suivi de commande.",
+    "icon": "./assets/logo-app.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/logo-app.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.allocouscous.allocouscous",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/logo-app.png",
+        "backgroundColor": "#d6001c"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "edgeToEdgeEnabled": false,
+      "predictiveBackGestureEnabled": false,
+      "package": "fr.allocouscous.app",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 4
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/logo-app.png",
+          "color": "#d6001c"
+        }
+      ],
+      "./plugins/with-android-adi-registration.js"
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "73aefb97-0839-4ea2-a2d2-920c1fed31b5"
+      }
+    },
+    "owner": "linupapps"
   }
 }
