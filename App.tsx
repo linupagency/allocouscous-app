@@ -302,6 +302,7 @@ const colors = {
 
 const restaurantHero = require('./assets/header-allocouscous.jpg') as ImageSourcePropType;
 const clientLogo = require('./assets/logo-allocouscous.png') as ImageSourcePropType;
+const appLogo = require('./assets/logo-app.png') as ImageSourcePropType;
 const tajineImage =
   'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=900&q=80';
 const couscousImage =
@@ -4251,6 +4252,7 @@ function DownloadLandingScreen({
     <ImageBackground source={restaurantHero} style={styles.downloadLanding} imageStyle={styles.downloadLandingImage}>
       <View style={styles.downloadLandingOverlay}>
         <View style={styles.downloadLandingCard}>
+          <Image source={appLogo} style={styles.downloadLandingAppLogo} resizeMode="cover" />
           <Image source={clientLogo} style={styles.downloadLandingLogo} resizeMode="contain" />
           <Text style={styles.downloadLandingTitle}>Télécharger Allo Couscous</Text>
           <Text style={styles.downloadLandingText}>Click and collect, paiement au retrait de la commande.</Text>
@@ -4262,11 +4264,19 @@ function DownloadLandingScreen({
             <Text style={styles.downloadLandingHint}>Ouvre cette page depuis ton téléphone ou choisis le store ci-dessous.</Text>
           )}
           <View style={styles.downloadStoreRow}>
-            <Pressable style={styles.downloadSecondaryButton} onPress={() => void openStoreUrl('ios')}>
-              <Text style={styles.downloadSecondaryButtonText}>App Store</Text>
+            <Pressable style={styles.downloadStoreBadge} onPress={() => void openStoreUrl('ios')}>
+              <Text style={styles.downloadStoreBadgeIcon}></Text>
+              <View style={styles.downloadStoreBadgeCopy}>
+                <Text style={styles.downloadStoreBadgeEyebrow}>Télécharger dans</Text>
+                <Text style={styles.downloadStoreBadgeTitle}>App Store</Text>
+              </View>
             </Pressable>
-            <Pressable style={styles.downloadSecondaryButton} onPress={() => void openStoreUrl('android')}>
-              <Text style={styles.downloadSecondaryButtonText}>Google Play</Text>
+            <Pressable style={styles.downloadStoreBadge} onPress={() => void openStoreUrl('android')}>
+              <Text style={styles.downloadStoreBadgeIcon}>▶</Text>
+              <View style={styles.downloadStoreBadgeCopy}>
+                <Text style={styles.downloadStoreBadgeEyebrow}>Disponible sur</Text>
+                <Text style={styles.downloadStoreBadgeTitle}>Google Play</Text>
+              </View>
             </Pressable>
           </View>
           <Pressable style={styles.downloadGhostButton} onPress={onOpenClientApp}>
@@ -8434,11 +8444,17 @@ const styles = StyleSheet.create(compactFontStyles({
     shadowRadius: 30,
     elevation: 8,
   },
+  downloadLandingAppLogo: {
+    width: 74,
+    height: 74,
+    borderRadius: 18,
+    marginBottom: 12,
+  },
   downloadLandingLogo: {
-    width: 210,
-    height: 120,
+    width: 220,
+    height: 86,
     maxWidth: '86%',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   downloadLandingTitle: {
     color: colors.ink,
@@ -8494,6 +8510,39 @@ const styles = StyleSheet.create(compactFontStyles({
     flexDirection: 'row',
     gap: 10,
     marginTop: 12,
+  },
+  downloadStoreBadge: {
+    flex: 1,
+    minHeight: 58,
+    borderRadius: 14,
+    backgroundColor: '#111827',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 10,
+    paddingHorizontal: 12,
+  },
+  downloadStoreBadgeIcon: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '900',
+    lineHeight: 28,
+  },
+  downloadStoreBadgeCopy: {
+    flexShrink: 1,
+    alignItems: 'flex-start',
+  },
+  downloadStoreBadgeEyebrow: {
+    color: '#e5e7eb',
+    fontSize: 9,
+    fontWeight: '800',
+    lineHeight: 12,
+  },
+  downloadStoreBadgeTitle: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '900',
+    lineHeight: 18,
   },
   downloadSecondaryButton: {
     flex: 1,
