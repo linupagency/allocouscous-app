@@ -1289,6 +1289,27 @@ const getAuthRefusalReason = (message?: string) => {
   return rawMessage || 'Motif non précisé par Supabase.';
 };
 
+const getPasswordResetRouteError = () => {
+  if (Platform.OS !== 'web' || typeof window === 'undefined') {
+    return null;
+  }
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  const queryParams = new URLSearchParams(window.location.search.replace(/^\?/, ''));
+  const error = hashParams.get('error') || queryParams.get('error');
+  const errorCode = hashParams.get('error_code') || queryParams.get('error_code');
+  const description = hashParams.get('error_description') || queryParams.get('error_description');
+  if (!error && !errorCode && !description) {
+    return null;
+  }
+  if (errorCode === 'otp_expired' || description?.toLowerCase().includes('expired')) {
+    return 'Lien expiré. Redemande un nouvel email “Mot de passe oublié” depuis l’application.';
+  }
+  if (error === 'access_denied') {
+    return 'Lien invalide ou déjà utilisé. Redemande un nouvel email “Mot de passe oublié” depuis l’application.';
+  }
+  return description || 'Lien de réinitialisation invalide. Redemande un nouvel email depuis l’application.';
+};
+
 const getWebPathname = () => {
   if (Platform.OS !== 'web' || typeof window === 'undefined') {
     return '/';
@@ -1302,7 +1323,21 @@ const isClientWebRoute = () => getWebPathname() === '/app';
 
 const isPasswordResetRoute = () => getWebPathname() === '/auth/reset-password';
 
-const isDownloadLandingRoute = () => Platform.OS === 'web' && !isAdminWebRoute() && !isClientWebRoute() && !isPasswordResetRoute();
+const hasPasswordRecoveryParams = () => {
+  if (Platform.OS !== 'web' || typeof window === 'undefined') {
+    return false;
+  }
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  const queryParams = new URLSearchParams(window.location.search.replace(/^\?/, ''));
+  const hashType = hashParams.get('type')?.toLowerCase();
+  const queryType = queryParams.get('type')?.toLowerCase();
+  return hashType === 'recovery' || queryType === 'recovery' || !!getPasswordResetRouteError();
+};
+
+const shouldShowPasswordResetScreen = () => isPasswordResetRoute() || hasPasswordRecoveryParams();
+
+const isDownloadLandingRoute = () =>
+  Platform.OS === 'web' && !isAdminWebRoute() && !isClientWebRoute() && !shouldShowPasswordResetScreen();
 
 const getPublicAppBaseUrl = () => {
   if (Platform.OS === 'web' && typeof window !== 'undefined') {
@@ -4037,7 +4072,7 @@ function AlloApp() {
     !['Terminée', 'Annulée'].includes(trackedOrder.status) &&
     trackedOrder.id !== NO_TRACKED_ORDER_ID;
 
-  if (isPasswordResetRoute()) {
+  if (shouldShowPasswordResetScreen()) {
     return (
       <SafeAreaView style={styles.safe}>
         <StatusBar style="dark" />
@@ -4173,9 +4208,14 @@ function PasswordResetScreen({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ variant: 'error' | 'success'; text: string } | null>(null);
+  const resetRouteError = getPasswordResetRouteError();
 
   const submit = async () => {
     setFeedback(null);
+    if (resetRouteError) {
+      setFeedback({ variant: 'error', text: resetRouteError });
+      return;
+    }
     if (!password || !confirmPassword) {
       setFeedback({ variant: 'error', text: 'Renseigne et confirme ton nouveau mot de passe.' });
       return;
@@ -4201,27 +4241,37 @@ function PasswordResetScreen({
       <View style={styles.formCard}>
         <Image source={downloadLandingLogoAsset} style={styles.downloadLandingLogo} resizeMode="contain" />
         <Text style={styles.sectionTitle}>Nouveau mot de passe</Text>
-        <Text style={styles.helperText}>Choisis un nouveau mot de passe pour ton compte Allo Couscous.</Text>
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Nouveau mot de passe</Text>
-          <TextInput
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            style={styles.input}
-            autoCapitalize="none"
-          />
-        </View>
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Confirmer le mot de passe</Text>
-          <TextInput
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry
-            style={styles.input}
-            autoCapitalize="none"
-          />
-        </View>
+        <Text style={styles.helperText}>
+          {resetRouteError ? 'Le lien reçu ne permet plus de modifier le mot de passe.' : 'Choisis un nouveau mot de passe pour ton compte Allo Couscous.'}
+        </Text>
+        {resetRouteError ? (
+          <View style={[styles.formBanner, styles.formBannerError]}>
+            <Text style={styles.formBannerErrorText}>{resetRouteError}</Text>
+          </View>
+        ) : (
+          <>
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Nouveau mot de passe</Text>
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                style={styles.input}
+                autoCapitalize="none"
+              />
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Confirmer le mot de passe</Text>
+              <TextInput
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry
+                style={styles.input}
+                autoCapitalize="none"
+              />
+            </View>
+          </>
+        )}
         {feedback ? (
           <View style={[styles.formBanner, feedback.variant === 'error' ? styles.formBannerError : styles.formBannerSuccess]}>
             <Text style={feedback.variant === 'error' ? styles.formBannerErrorText : styles.formBannerSuccessText}>
@@ -4229,9 +4279,11 @@ function PasswordResetScreen({
             </Text>
           </View>
         ) : null}
-        <Pressable style={[styles.primaryButton, busy && styles.buttonDisabled]} onPress={() => void submit()} disabled={busy}>
-          <Text style={styles.primaryButtonText}>{busy ? 'Modification...' : 'Modifier le mot de passe'}</Text>
-        </Pressable>
+        {!resetRouteError ? (
+          <Pressable style={[styles.primaryButton, busy && styles.buttonDisabled]} onPress={() => void submit()} disabled={busy}>
+            <Text style={styles.primaryButtonText}>{busy ? 'Modification...' : 'Modifier le mot de passe'}</Text>
+          </Pressable>
+        ) : null}
         <Pressable style={styles.secondaryButton} onPress={onOpenApp}>
           <Text style={styles.secondaryButtonText}>Retour à l’application</Text>
         </Pressable>
