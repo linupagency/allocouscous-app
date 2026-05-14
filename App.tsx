@@ -301,7 +301,7 @@ const colors = {
 };
 
 const restaurantHero = require('./assets/header-allocouscous.jpg') as ImageSourcePropType;
-const clientLogo = require('./assets/logo-allocouscous.png') as ImageSourcePropType;
+const clientLogo = require('./assets/logo-allo.png') as ImageSourcePropType;
 const appLogo = require('./assets/logo-app.png') as ImageSourcePropType;
 const tajineImage =
   'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=900&q=80';
