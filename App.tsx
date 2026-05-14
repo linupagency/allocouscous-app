@@ -19,6 +19,7 @@ import {
   type DimensionValue,
   type ImageSourcePropType,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ExpoLinking from 'expo-linking';
 import { adminSupabase, isSupabaseConfigured, supabase } from './src/lib/supabase';
@@ -4198,7 +4199,7 @@ function PasswordResetScreen({
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.profileContent}>
       <View style={styles.formCard}>
-        <Image source={clientLogo} style={styles.downloadLandingLogo} resizeMode="contain" />
+        <Image source={downloadLandingLogoAsset} style={styles.downloadLandingLogo} resizeMode="contain" />
         <Text style={styles.sectionTitle}>Nouveau mot de passe</Text>
         <Text style={styles.helperText}>Choisis un nouveau mot de passe pour ton compte Allo Couscous.</Text>
         <View style={styles.inputGroup}>
@@ -4808,10 +4809,12 @@ function CartScreen({
       <View style={[styles.fill, styles.clientPageTopInset]}>
         <Header title="Mon Panier" subtitle="0 article" onBack={onMenu} />
         <View style={styles.emptyState}>
-          <View style={styles.emptyIcon}><Text style={styles.emptyIconText}>▢</Text></View>
+          <View style={styles.emptyIcon}>
+            <Ionicons name="bag-outline" size={52} color={colors.red} />
+          </View>
           <Text style={styles.emptyTitle}>Votre panier est vide</Text>
           <Text style={styles.emptyText}>Ajoutez des plats depuis notre menu</Text>
-          <Pressable style={styles.primaryButtonCompact} onPress={onMenu}>
+          <Pressable style={[styles.primaryButtonCompact, styles.emptyCartCta]} onPress={onMenu}>
             <Text style={styles.primaryButtonText}>Voir le menu</Text>
           </Pressable>
         </View>
@@ -9707,32 +9710,36 @@ const styles = StyleSheet.create(compactFontStyles({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 24,
-    gap: 18,
+    padding: 28,
+    gap: 22,
   },
   emptyIcon: {
-    width: 112,
-    height: 112,
-    borderRadius: 56,
-    backgroundColor: '#eef1f5',
+    width: 108,
+    height: 108,
+    borderRadius: 54,
+    backgroundColor: '#e4ecf2',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emptyIconText: {
-    color: colors.red,
-    fontSize: 52,
-    fontWeight: '900',
-  },
   emptyTitle: {
     color: colors.ink,
-    fontSize: 27,
+    fontSize: 26,
     fontWeight: '900',
     textAlign: 'center',
   },
   emptyText: {
-    color: '#374151',
-    fontSize: 20,
+    color: '#475569',
+    fontSize: 17,
+    fontWeight: '500',
     textAlign: 'center',
+    lineHeight: 24,
+    maxWidth: 320,
+  },
+  emptyCartCta: {
+    marginTop: 6,
+    minHeight: 50,
+    paddingHorizontal: 36,
+    borderRadius: 999,
   },
   cartContent: {
     paddingBottom: 150,

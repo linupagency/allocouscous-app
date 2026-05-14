@@ -16,6 +16,7 @@
     "submit:android": "npx eas-cli@18.9.1 submit --platform android --profile production --latest"
   },
   "dependencies": {
+    "@expo/vector-icons": "~15.1.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@supabase/supabase-js": "^2.104.1",
     "expo": "~54.0.33",
