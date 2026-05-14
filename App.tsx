@@ -301,8 +301,8 @@ const colors = {
 };
 
 const restaurantHero = require('./assets/header-allocouscous.jpg') as ImageSourcePropType;
-const clientLogo = require('./assets/logo-allo.png') as ImageSourcePropType;
-const appLogo = require('./assets/logo-app.png') as ImageSourcePropType;
+const clientLogo = require('./assets/logo-allocouscous.png') as ImageSourcePropType;
+const downloadLandingLogoAsset = require('./assets/logo-allo.png') as ImageSourcePropType;
 const tajineImage =
   'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&w=900&q=80';
 const couscousImage =
@@ -4252,16 +4252,17 @@ function DownloadLandingScreen({
     <ImageBackground source={restaurantHero} style={styles.downloadLanding} imageStyle={styles.downloadLandingImage}>
       <View style={styles.downloadLandingOverlay}>
         <View style={styles.downloadLandingCard}>
-          <Image source={appLogo} style={styles.downloadLandingAppLogo} resizeMode="cover" />
-          <Image source={clientLogo} style={styles.downloadLandingLogo} resizeMode="contain" />
-          <Text style={styles.downloadLandingTitle}>Télécharger Allo Couscous</Text>
+          <Image source={downloadLandingLogoAsset} style={styles.downloadLandingLogo} resizeMode="contain" />
+          <Text style={styles.downloadLandingTitle}>Application Allo Couscous</Text>
           <Text style={styles.downloadLandingText}>Click and collect, paiement au retrait de la commande.</Text>
           {primaryPlatform ? (
             <Pressable style={styles.downloadPrimaryButton} onPress={() => void openStoreUrl(primaryPlatform)}>
               <Text style={styles.downloadPrimaryButtonText}>{primaryLabel}</Text>
             </Pressable>
           ) : (
-            <Text style={styles.downloadLandingHint}>Ouvre cette page depuis ton téléphone ou choisis le store ci-dessous.</Text>
+            <Text style={styles.downloadLandingHint}>
+              Ouvre cette page depuis ton téléphone ou choisis le magasin ci-dessous.
+            </Text>
           )}
           <View style={styles.downloadStoreRow}>
             <Pressable style={styles.downloadStoreBadge} onPress={() => void openStoreUrl('ios')}>
@@ -8444,27 +8445,21 @@ const styles = StyleSheet.create(compactFontStyles({
     shadowRadius: 30,
     elevation: 8,
   },
-  downloadLandingAppLogo: {
-    width: 74,
-    height: 74,
-    borderRadius: 18,
-    marginBottom: 12,
-  },
   downloadLandingLogo: {
-    width: 220,
-    height: 86,
-    maxWidth: '86%',
-    marginBottom: 12,
+    width: 380,
+    height: 168,
+    maxWidth: '98%',
+    marginBottom: 20,
   },
   downloadLandingTitle: {
-    color: colors.ink,
+    color: colors.charcoal,
     fontSize: 24,
     fontWeight: '900',
     textAlign: 'center',
     marginBottom: 8,
   },
   downloadLandingText: {
-    color: colors.muted,
+    color: colors.charcoal,
     fontSize: 15,
     fontWeight: '700',
     lineHeight: 22,
@@ -8477,7 +8472,7 @@ const styles = StyleSheet.create(compactFontStyles({
     backgroundColor: '#fff7ed',
     borderWidth: 1,
     borderColor: '#fed7aa',
-    color: colors.ink,
+    color: colors.charcoal,
     fontSize: 14,
     fontWeight: '800',
     lineHeight: 20,
@@ -8515,12 +8510,17 @@ const styles = StyleSheet.create(compactFontStyles({
     flex: 1,
     minHeight: 58,
     borderRadius: 14,
-    backgroundColor: '#111827',
+    backgroundColor: colors.charcoal,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
     gap: 10,
     paddingHorizontal: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 4,
   },
   downloadStoreBadgeIcon: {
     color: '#fff',
